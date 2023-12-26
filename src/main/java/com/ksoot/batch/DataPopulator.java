@@ -31,7 +31,7 @@ class DataPopulator {
   private static final Faker faker =
       new Faker(new Locale.Builder().setLanguage("en").setRegion("US").build());
   private static final Random random = new Random();
-  private static final int ACCOUNTS_COUNT = 100;
+  private static final int ACCOUNTS_COUNT = 1000;
   private static final int BATCH_SIZE = 10000;
   private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(100);
   private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(1000);
@@ -153,25 +153,23 @@ class DataPopulator {
                 .append("amount", generateTransactionAmount());
             transactions.add(transaction);
 
+            transactionsCount++;
             if (transactionsCount % BATCH_SIZE == 0) {
               transactionsCollection.insertMany(transactions);
               transactions.clear();
               log.info(
-                  "Created " + (transactionsCount + 1) + " Credit card transactions, processed till date: " + date);
+                  "Created " + transactionsCount + " Credit card transactions, processed till date: " + date);
             }
-
-            transactionsCount++;
           }
         }
       }
 
+      accountsCount++;
       if (accountsCount % BATCH_SIZE == 0) {
         accountsCollection.insertMany(accounts);
         accounts.clear();
-        log.info("Created " + (accountsCount + 1) + " Credit card accounts");
+        log.info("Created " + accountsCount + " Credit card accounts");
       }
-
-      accountsCount++;
     }
 
     if (CollectionUtils.isNotEmpty(accounts)) {

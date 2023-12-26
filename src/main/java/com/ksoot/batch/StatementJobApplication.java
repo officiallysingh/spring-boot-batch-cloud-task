@@ -6,7 +6,6 @@ import jakarta.annotation.PostConstruct;
 import java.time.YearMonth;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -16,7 +15,6 @@ import org.springframework.cloud.task.configuration.EnableTask;
 import org.springframework.context.annotation.Bean;
 
 @EnableTask
-@EnableBatchProcessing
 @SpringBootApplication
 @Slf4j
 public class StatementJobApplication {

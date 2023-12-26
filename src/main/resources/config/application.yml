@@ -84,13 +84,12 @@ debug: false
 # Application specific properties
 # Add your own application properties here
 # ===================================================================
-application:
-  batch:
-    chunk-size: 100
-    skip-limit: 10
-    max-retries: 3
-    backoff-initial-delay: PT3S
-    backoff-multiplier: 2
-    item-reader-page-size: 300
-    partition-size: 16
-    trigger.partitioning.threshold: 100
+batch:
+  chunk-size: 100
+  skip-limit: 10
+  max-retries: 3
+  backoff-initial-delay: PT3S
+  backoff-multiplier: 2
+  page-size: 300
+  partition-size: 16
+  trigger-partitioning-threshold: 100

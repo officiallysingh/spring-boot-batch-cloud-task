@@ -1,6 +1,6 @@
 package com.ksoot.batch.job;
 
-import static com.ksoot.batch.job.common.AbstractPartitioner.PARTITION_DATA_VALUE_SEPARATOR;
+import static com.ksoot.spring.batch.common.AbstractPartitioner.PARTITION_DATA_VALUE_SEPARATOR;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
@@ -9,13 +9,18 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort
 import com.ksoot.batch.domain.AppConstants;
 import com.ksoot.batch.domain.model.DailyTransaction;
 import com.ksoot.batch.domain.model.Statement;
-import com.ksoot.batch.job.common.*;
 import com.ksoot.batch.utils.DateTimeUtils;
 import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import com.ksoot.spring.batch.common.BatchConfiguration;
+import com.ksoot.spring.batch.common.JobConfigurationSupport;
+import com.ksoot.spring.batch.common.MongoAggregationPagingItemReader;
+import com.ksoot.spring.batch.common.MongoIdGenerator;
+import com.ksoot.spring.batch.common.MongoItemWriters;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.batch.core.Job;
@@ -111,25 +116,6 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
           project("card_number", "date", "amount").andExclude("_id"),
           sort(Sort.Direction.ASC, "card_number", "date")
         };
-    //    final AggregationOperation[] aggregationOperations =
-    //            new AggregationOperation[] {
-    //    match(Criteria.where("card_number").in("1800-5557-7984-5280", "2131-1823-1552-4903")),
-    //            project("card_number", "amount")
-    //                    .andExpression("{$toDate: '$datetime'}").as("date"),
-    //            group("card_number", "date").sum("amount").as("amount"),
-    //            project("card_number", "date", "amount").andExclude("_id"),
-    //            sort(Sort.Direction.ASC, "card_number", "date")
-    //            };
-
-    //    Aggregation.newAggregation(
-    //            match(Criteria.where("card_number")
-    //                    .in("1800-5557-7984-5280", "2131-1823-1552-4903")),
-    //            project("card_number", "amount", "datetime")
-    //                    .andExpression("dateToString('%Y-%m-%d', datetime)")
-    //                    .as("date"),
-    //            group("card_number", "date").sum("amount").as("amount"),
-    //            project("card_number", "date", "amount").andExclude("_id"),
-    //            sort(Sort.Direction.ASC, "card_number", "date"));
 
     MongoAggregationPagingItemReader<DailyTransaction> itemReader =
         new MongoAggregationPagingItemReader<>();
@@ -138,7 +124,7 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
     itemReader.setCollection("transactions");
     itemReader.setTargetType(DailyTransaction.class);
     itemReader.setAggregationOperation(aggregationOperations);
-    itemReader.setPageSize(this.batchProperties.getItemReaderPageSize());
+    itemReader.setPageSize(this.batchProperties.getPageSize());
     return itemReader;
   }
 

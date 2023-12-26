@@ -81,11 +81,11 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>io.github.officiallysingh</groupId>-->
-<!--            <artifactId>spring-batch-commons</artifactId>-->
-<!--            <version>${spring-batch-commons.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>io.github.officiallysingh</groupId>
+            <artifactId>spring-batch-commons</artifactId>
+            <version>${spring-batch-commons.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>

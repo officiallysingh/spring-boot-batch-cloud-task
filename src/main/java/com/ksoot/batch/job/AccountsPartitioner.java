@@ -5,8 +5,8 @@ import static com.mongodb.client.model.Projections.*;
 import static com.mongodb.client.model.Sorts.ascending;
 
 import com.ksoot.batch.domain.AppConstants;
-import com.ksoot.batch.job.common.AbstractPartitioner;
-import com.ksoot.batch.job.common.BatchProperties;
+import com.ksoot.spring.batch.common.AbstractPartitioner;
+import com.ksoot.spring.batch.common.BatchProperties;
 import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
 import java.util.List;
