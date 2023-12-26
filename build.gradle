@@ -13,6 +13,7 @@ java {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 dependencyManagement {
@@ -32,7 +33,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.flywaydb:flyway-core'
 
-//    implementation 'io.github.officiallysingh:spring-batch-commons:0.0.1-SNAPSHOT'
+    implementation 'io.github.officiallysingh:spring-batch-commons:0.0.1-SNAPSHOT'
 
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.apache.commons:commons-collections4:4.4'
