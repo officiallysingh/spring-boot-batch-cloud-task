@@ -1,0 +1,96 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+#
+# Full reference for Standard Spring Boot properties is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+# set -Dspring.profiles.active=<dev|sit|int> as JVM argument to run in desired profile
+# If no profile is specified explicitly, application will fall back to default profile, which is "local"
+
+spring:
+  application:
+    name: spring-boot-batch-cloud-task
+    #------------------------- Database configuration -------------------------
+    datasource:
+      url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/scdf}
+      username: ${POSTGRES_USERNAME:postgres}
+      password: ${POSTGRES_PASSWORD:admin}
+      hikari:
+        pool-name: pg-connection-pool
+        maximum-pool-size: 128
+        minimum-idle: 16
+    jpa:
+      hibernate:
+        ddl-auto: validate
+      database: POSTGRESQL
+      open-in-view: false
+      show-sql: false
+      properties:
+        '[hibernate.show_sql]': false
+        '[hibernate.format_sql]': true
+        '[hibernate.use_sql_comments]': true
+        '[hibernate.jdbc.time_zone]': UTC
+        '[integration.envers.enabled]': true
+        '[hibernate.enable_lazy_load_no_trans]': true
+    flyway:
+      enabled: false
+      baseline-on-migrate: false
+      out-of-order: false
+      locations:
+        - db/migration
+  #------------------------- MongoDB configuration -------------------------
+  data:
+    mongodb:
+      uri: ${MONGODB_URL:mongodb://localhost:27017}
+      database: ${MONGODB_DATABASE:statement_db}
+      auto-index-creation: true
+      uuid-representation: standard
+      account:
+        uri: ${spring.data.mongodb.uri}
+        database: account_db
+      transaction:
+        uri: ${spring.data.mongodb.uri}
+        database: transaction_db
+  docker:
+    compose:
+      enabled: false
+  main:
+    log-startup-info: true
+#    Define Async Task Executor when executing the jobs from Rest API.
+#  task:
+#    execution:
+#      thread-name-prefix: spring-task-executor-
+#      pool:
+#        core-size: 8
+#        max-size: 64
+#        queue-capacity: 10000
+#        keep-alive: "10s"
+#  threads:
+#    virtual:
+#      enabled: true
+
+logging:
+  level:
+    ROOT: info
+    '[org.mongodb.driver]': warn
+    '[org.springframework.data.mongodb.core.MongoTemplate]': debug
+    '[org.springframework.batch]': debug
+debug: false
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here
+# ===================================================================
+application:
+  batch:
+    chunk-size: 100
+    skip-limit: 10
+    max-retries: 3
+    backoff-initial-delay: PT3S
+    backoff-multiplier: 2
+    item-reader-page-size: 300
+    partition-size: 16
+    trigger.partitioning.threshold: 100
