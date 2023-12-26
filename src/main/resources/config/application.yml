@@ -68,9 +68,9 @@ spring:
 #        max-size: 64
 #        queue-capacity: 10000
 #        keep-alive: "10s"
-#  threads:
-#    virtual:
-#      enabled: true
+  threads:
+    virtual:
+      enabled: true
 
 logging:
   level:
