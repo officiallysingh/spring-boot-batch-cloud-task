@@ -25,7 +25,7 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 @Document(collection = "statements")
 @CompoundIndex(
     unique = true,
-    name = "idxStatementsCardNumberTxnDate",
+    name = "idx_unq_card_number_transaction_date",
     def = "{'card_number' : 1, 'transaction_date': 1}")
 @Valid
 @ToString
@@ -36,13 +36,13 @@ public class Statement {
 
   @NotEmpty
   @Size(max = 50)
-  @Indexed(name = "idxStatementsCardNumber", background = true)
+  @Indexed(name = "idx_card_number", background = true)
   @Field(name = "card_number")
   private String cardNumber;
 
   @NotNull
   @PastOrPresent
-  @Indexed(name = "idxStatementsTransactionDate", background = true)
+  @Indexed(name = "idx_transaction_date", background = true)
   @Field(name = "transaction_date")
   private LocalDate transactionDate;
 

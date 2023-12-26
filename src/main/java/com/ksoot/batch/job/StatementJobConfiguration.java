@@ -33,7 +33,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -82,51 +81,55 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
             : Collections.emptyList();
 
     OffsetDateTime fromDateTime =
-            statementMonth.atDay(1).atStartOfDay().atOffset(DateTimeUtils.ZONE_OFFSET_IST);
+        statementMonth.atDay(1).atStartOfDay().atOffset(DateTimeUtils.ZONE_OFFSET_IST);
     OffsetDateTime tillDateTime =
-            statementMonth.atEndOfMonth().plusDays(1).atStartOfDay().atOffset(DateTimeUtils.ZONE_OFFSET_IST);
+        statementMonth
+            .atEndOfMonth()
+            .plusDays(1)
+            .atStartOfDay()
+            .atOffset(DateTimeUtils.ZONE_OFFSET_IST);
     Criteria condition = null;
     if (CollectionUtils.isNotEmpty(cardNumbersList)) {
-      condition = Criteria.where("card_number")
+      condition =
+          Criteria.where("card_number")
               .in(cardNumbersList)
-//              .and("datetime")
-//              .gte(fromDateTime)
-//              .lt(tillDateTime)
-      ;
+              .and("datetime")
+              .gte(fromDateTime)
+              .lt(tillDateTime);
     } else {
-      //        condition = Criteria.where("datetime").gte(fromDateTime).lt(tillDateTime);
-      condition = new Criteria();
+      condition = Criteria.where("datetime").gte(fromDateTime).lt(tillDateTime);
+      //      condition = new Criteria();
     }
 
-//    final AggregationOperation[] aggregationOperations =
-//        new AggregationOperation[] {
-//          match(condition),
-//          project("card_number", "amount", "datetime")
-//              .andExpression("dateToString('%Y-%m-%d', datetime)")
-//              .as("date"),
-//          group("card_number", "date").sum("amount").as("amount"),
-//          project("card_number", "date", "amount").andExclude("_id"),
-//          sort(Sort.Direction.ASC, "card_number", "date")
-//        };
     final AggregationOperation[] aggregationOperations =
-            new AggregationOperation[] {
-    match(Criteria.where("card_number").in("1800-5557-7984-5280", "2131-1823-1552-4903")),
-            project("card_number", "amount")
-                    .andExpression("{$toDate: '$datetime'}").as("date"),
-            group("card_number", "date").sum("amount").as("amount"),
-            project("card_number", "date", "amount").andExclude("_id"),
-            sort(Sort.Direction.ASC, "card_number", "date")
-            };
+        new AggregationOperation[] {
+          match(condition),
+          project("card_number", "amount", "datetime")
+              .andExpression("{$toDate: '$datetime'}")
+              .as("date"),
+          group("card_number", "date").sum("amount").as("amount"),
+          project("card_number", "date", "amount").andExclude("_id"),
+          sort(Sort.Direction.ASC, "card_number", "date")
+        };
+    //    final AggregationOperation[] aggregationOperations =
+    //            new AggregationOperation[] {
+    //    match(Criteria.where("card_number").in("1800-5557-7984-5280", "2131-1823-1552-4903")),
+    //            project("card_number", "amount")
+    //                    .andExpression("{$toDate: '$datetime'}").as("date"),
+    //            group("card_number", "date").sum("amount").as("amount"),
+    //            project("card_number", "date", "amount").andExclude("_id"),
+    //            sort(Sort.Direction.ASC, "card_number", "date")
+    //            };
 
-//    Aggregation.newAggregation(
-//            match(Criteria.where("card_number")
-//                    .in("1800-5557-7984-5280", "2131-1823-1552-4903")),
-//            project("card_number", "amount", "datetime")
-//                    .andExpression("dateToString('%Y-%m-%d', datetime)")
-//                    .as("date"),
-//            group("card_number", "date").sum("amount").as("amount"),
-//            project("card_number", "date", "amount").andExclude("_id"),
-//            sort(Sort.Direction.ASC, "card_number", "date"));
+    //    Aggregation.newAggregation(
+    //            match(Criteria.where("card_number")
+    //                    .in("1800-5557-7984-5280", "2131-1823-1552-4903")),
+    //            project("card_number", "amount", "datetime")
+    //                    .andExpression("dateToString('%Y-%m-%d', datetime)")
+    //                    .as("date"),
+    //            group("card_number", "date").sum("amount").as("amount"),
+    //            project("card_number", "date", "amount").andExclude("_id"),
+    //            sort(Sort.Direction.ASC, "card_number", "date"));
 
     MongoAggregationPagingItemReader<DailyTransaction> itemReader =
         new MongoAggregationPagingItemReader<>();
@@ -145,23 +148,21 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
     final CompositeItemProcessor<DailyTransaction, Statement> compositeProcessor =
         new CompositeItemProcessor<>();
     compositeProcessor.setDelegates(
-        Arrays.asList(
-                beanValidatingDailyTransactionProcessor,
-            new StatementProcessor()));
+        Arrays.asList(beanValidatingDailyTransactionProcessor, new StatementProcessor()));
     return compositeProcessor;
   }
 
   @Bean
   BeanValidatingItemProcessor<DailyTransaction> beanValidatingDailyTransactionProcessor(
-          final LocalValidatorFactoryBean validatorFactory) {
+      final LocalValidatorFactoryBean validatorFactory) {
     return new BeanValidatingItemProcessor<>(validatorFactory);
   }
 
   // Idempotent upsert
   @Bean
   MongoItemWriter<Statement> statementWriter(
-      @Qualifier("mongoTemplate") final MongoTemplate mongoTemplate) {
-    return MongoItemWriters.<Statement>template(mongoTemplate)
+      @Qualifier("mongoTemplate") final MongoTemplate statementMongoTemplate) {
+    return MongoItemWriters.<Statement>template(statementMongoTemplate)
         .collection("statements")
         .idGenerator(
             (Statement item) ->

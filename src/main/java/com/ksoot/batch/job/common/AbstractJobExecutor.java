@@ -21,8 +21,10 @@ public abstract class AbstractJobExecutor {
 
   protected final void execute(
       final Job job, final JobParametersBuilder jobParametersBuilder, final boolean forceRestart)
-      throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
-          JobParametersInvalidException, JobRestartException {
+      throws JobInstanceAlreadyCompleteException,
+          JobExecutionAlreadyRunningException,
+          JobParametersInvalidException,
+          JobRestartException {
     JobParameters jobParameters = jobParametersBuilder.toJobParameters();
     log.info(
         "Submitting Job: "

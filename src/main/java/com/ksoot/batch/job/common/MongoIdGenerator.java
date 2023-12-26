@@ -7,8 +7,6 @@ import org.springframework.util.Assert;
 @FunctionalInterface
 public interface MongoIdGenerator<T, R> {
 
-  R generate(final T input);
-
   static ObjectId compositeIdGenerator(final Object... values) {
     Assert.notEmpty(values, "'values' must not be null or empty");
     Assert.noNullElements(values, "'values' must not contain null elements");
@@ -22,4 +20,6 @@ public interface MongoIdGenerator<T, R> {
 
     return new ObjectId(hexString);
   }
+
+  R generate(final T input);
 }

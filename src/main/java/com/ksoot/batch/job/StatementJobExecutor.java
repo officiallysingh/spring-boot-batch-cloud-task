@@ -2,7 +2,6 @@ package com.ksoot.batch.job;
 
 import com.ksoot.batch.domain.AppConstants;
 import com.ksoot.batch.job.common.AbstractJobExecutor;
-
 import java.time.YearMonth;
 import java.util.Collections;
 import java.util.List;
@@ -23,20 +22,20 @@ public class StatementJobExecutor extends AbstractJobExecutor {
 
   private final Job statementJob;
 
-  StatementJobExecutor(
-      @Qualifier(AppConstants.STATEMENT_JOB_NAME) final Job statementJob) {
+  StatementJobExecutor(@Qualifier(AppConstants.STATEMENT_JOB_NAME) final Job statementJob) {
     this.statementJob = statementJob;
   }
 
   public void executeStatementJob(
-      final YearMonth month,
-      final boolean forceRestart,
-      final List<String> cardNumbers)
-      throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
-          JobParametersInvalidException, JobRestartException {
+      final YearMonth month, final boolean forceRestart, final List<String> cardNumbers)
+      throws JobInstanceAlreadyCompleteException,
+          JobExecutionAlreadyRunningException,
+          JobParametersInvalidException,
+          JobRestartException {
 
     JobParametersBuilder jobParametersBuilder = new JobParametersBuilder(this.jobExplorer);
-    jobParametersBuilder.addJobParameter(AppConstants.JOB_PARAM_NAME_STATEMENT_MONTH, month.toString(), String.class);
+    jobParametersBuilder.addJobParameter(
+        AppConstants.JOB_PARAM_NAME_STATEMENT_MONTH, month.toString(), String.class);
     if (CollectionUtils.isNotEmpty(cardNumbers)) {
       Collections.sort(cardNumbers);
       jobParametersBuilder.addJobParameter(

@@ -1,11 +1,9 @@
 package com.ksoot.batch.job.common;
 
 import java.util.*;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.batch.item.data.AbstractPaginatedDataItemReader;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -68,16 +66,17 @@ public class MongoAggregationPagingItemReader<T> extends AbstractPaginatedDataIt
   @SuppressWarnings("unchecked")
   protected Iterator<T> doPageRead() {
     return (Iterator<T>)
-            this.template
-                    .aggregate(
-                            Aggregation.newAggregation(ArrayUtils.addAll(
-                                    this.aggregationOperations,
-                                    Aggregation.limit(this.pageSize),
-                                    Aggregation.skip((long) (this.page) * this.pageSize))),
-                            this.collection,
-                            this.type)
-                    .getMappedResults()
-                    .iterator();
+        this.template
+            .aggregate(
+                Aggregation.newAggregation(
+                    ArrayUtils.addAll(
+                        this.aggregationOperations,
+                        Aggregation.limit(this.pageSize),
+                        Aggregation.skip((long) (this.page) * this.pageSize))),
+                this.collection,
+                this.type)
+            .getMappedResults()
+            .iterator();
   }
 
   /**
@@ -91,6 +90,7 @@ public class MongoAggregationPagingItemReader<T> extends AbstractPaginatedDataIt
     Assert.notNull(this.collection, "A Collection name is required.");
     Assert.notNull(this.type, "A type to convert the input into is required.");
     Assert.notNull(this.aggregationOperations, "AggregationOperation[] is required.");
-    Assert.noNullElements(this.aggregationOperations, "AggregationOperation[] cannot have null elements.");
+    Assert.noNullElements(
+        this.aggregationOperations, "AggregationOperation[] cannot have null elements.");
   }
 }

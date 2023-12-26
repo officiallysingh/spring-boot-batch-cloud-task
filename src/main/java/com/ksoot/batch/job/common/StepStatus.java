@@ -5,6 +5,9 @@ import org.springframework.util.Assert;
 
 public class StepStatus {
 
+  public static final ExitStatus COMPLETED_WITH_SKIPS =
+      new ExitStatus("COMPLETED_WITH_SKIPS", "Completed with skips");
+
   private StepStatus() {
     throw new AssertionError("Static helper class. Not supposed to be instantiated");
   }
@@ -32,9 +35,6 @@ public class StepStatus {
   public static ExitStatus stopped() {
     return ExitStatus.STOPPED;
   }
-
-  public static final ExitStatus COMPLETED_WITH_SKIPS =
-      new ExitStatus("COMPLETED_WITH_SKIPS", "Completed with skips");
 
   public static ExitStatus of(final String code, final String description) {
     Assert.hasText("code", "ExitStatus code required");

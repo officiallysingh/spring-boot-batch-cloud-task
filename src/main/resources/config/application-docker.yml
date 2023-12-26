@@ -16,6 +16,8 @@ logging:
     name: ${logging.file.path}/application.log
   level:
     ROOT: info
+    #    '[org.springframework.data.mongodb.core.MongoTemplate]': debug
+#    '[org.springframework.batch]': debug
 debug: false
 
 # ===================================================================

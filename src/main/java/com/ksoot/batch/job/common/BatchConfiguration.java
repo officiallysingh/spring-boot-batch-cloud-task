@@ -1,5 +1,7 @@
 package com.ksoot.batch.job.common;
 
+import static com.ksoot.batch.domain.AppConstants.RUN_ID_SEQUENCE_NAME;
+
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.NonTransientDataAccessException;
 import org.springframework.dao.RecoverableDataAccessException;
@@ -34,21 +35,19 @@ import org.springframework.retry.policy.CompositeRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import static com.ksoot.batch.domain.AppConstants.RUN_ID_SEQUENCE_NAME;
-
 @Configuration // Change this annotation to @AutoConfiguration when this class moved to lib
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
 @EnableConfigurationProperties(value = {BatchProperties.class})
 @RequiredArgsConstructor
 public class BatchConfiguration extends DefaultBatchConfiguration {
 
-//    Define Async Task Executor when executing the jobs from Rest API.
-//  private final TaskExecutor taskExecutor;
-//
-//  @Override
-//  public TaskExecutor getTaskExecutor() {
-//    return this.taskExecutor;
-//  }
+  //    Define Async Task Executor when executing the jobs from Rest API.
+  //  private final TaskExecutor taskExecutor;
+  //
+  //  @Override
+  //  public TaskExecutor getTaskExecutor() {
+  //    return this.taskExecutor;
+  //  }
   final DataSource dataSource;
 
   @ConditionalOnMissingBean
@@ -58,7 +57,7 @@ public class BatchConfiguration extends DefaultBatchConfiguration {
         new PostgresSequenceMaxValueIncrementer(dataSource, RUN_ID_SEQUENCE_NAME));
   }
 
-//  @Bean
+  //  @Bean
   public PlatformTransactionManager getTransactionManager() {
     return new DataSourceTransactionManager(this.dataSource);
   }
@@ -77,29 +76,30 @@ public class BatchConfiguration extends DefaultBatchConfiguration {
   RetryPolicy retryPolicy(final BatchProperties batchProperties) {
     CompositeRetryPolicy retryPolicy = new CompositeRetryPolicy();
     retryPolicy.setPolicies(
-        ArrayUtils.toArray(this.noRetryPolicy(batchProperties), this.daoRetryPolicy(batchProperties)));
+        ArrayUtils.toArray(
+            this.noRetryPolicy(batchProperties), this.daoRetryPolicy(batchProperties)));
     return retryPolicy;
   }
 
   private RetryPolicy noRetryPolicy(final BatchProperties batchProperties) {
     Map<Class<? extends Throwable>, Boolean> exceptionClassifiers =
-            this.skippedExceptions().stream().collect(Collectors.toMap(ex -> ex, ex -> Boolean.FALSE));
+        this.skippedExceptions().stream().collect(Collectors.toMap(ex -> ex, ex -> Boolean.FALSE));
     return new SimpleRetryPolicy(batchProperties.getMaxRetries(), exceptionClassifiers, false);
   }
 
   private RetryPolicy daoRetryPolicy(final BatchProperties batchProperties) {
     return new SimpleRetryPolicy(
-            batchProperties.getMaxRetries(),
-            Map.of(
-                    TransientDataAccessException.class,
-                    true,
-                    RecoverableDataAccessException.class,
-                    true,
-                    NonTransientDataAccessException.class,
-                    false,
-                    EmptyResultDataAccessException.class,
-                    false),
-            false);
+        batchProperties.getMaxRetries(),
+        Map.of(
+            TransientDataAccessException.class,
+            true,
+            RecoverableDataAccessException.class,
+            true,
+            NonTransientDataAccessException.class,
+            false,
+            EmptyResultDataAccessException.class,
+            false),
+        false);
   }
 
   // TODO: May need to Implement retry policy for Kafka,
