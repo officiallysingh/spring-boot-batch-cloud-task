@@ -40,7 +40,7 @@ public class StatementJobApplication {
     private final StatementJobExecutor statementJobExecutor;
     private final DataPopulator dataPopulator;
 
-    @Value("${date:#{T(java.time.YearMonth).now().minusMonths(1)}}")
+    @Value("${month:#{T(java.time.YearMonth).now().minusMonths(1)}}")
     private YearMonth month;
 
     @Value("${forceRestart:false}")

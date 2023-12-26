@@ -31,7 +31,7 @@ class DataPopulator {
   private static final Faker faker =
       new Faker(new Locale.Builder().setLanguage("en").setRegion("US").build());
   private static final Random random = new Random();
-  private static final int ACCOUNTS_COUNT = 10;
+  private static final int ACCOUNTS_COUNT = 1000;
   private static final int BATCH_SIZE = 1000;
   private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(100);
   private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(1000);
@@ -114,7 +114,7 @@ class DataPopulator {
 
   public void createData() {
     this.createSchema();
-    log.info("Creating dummy data");
+    log.info("Creating sample data");
     final MongoCollection<Document> accountsCollection =
         this.accountMongoTemplate.getCollection("accounts");
     if (accountsCollection.countDocuments() > 0) {
