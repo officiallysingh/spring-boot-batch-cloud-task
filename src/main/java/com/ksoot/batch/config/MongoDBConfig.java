@@ -6,7 +6,7 @@ import com.mongodb.DBObjectCodecProvider;
 import com.mongodb.DBRefCodecProvider;
 import com.mongodb.DocumentToDBRefTransformer;
 import com.mongodb.Jep395RecordCodecProvider;
-//import com.mongodb.KotlinCodecProvider;
+import com.mongodb.KotlinCodecProvider;
 import com.mongodb.MongoClientSettings;
 
 import java.security.KeyManagementException;
@@ -14,14 +14,17 @@ import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.gridfs.codecs.GridFSFileCodecProvider;
 import com.mongodb.client.model.geojson.codecs.GeoJsonCodecProvider;
-//import com.mongodb.client.model.mql.ExpressionCodecProvider;
+import com.mongodb.client.model.mql.ExpressionCodecProvider;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.BsonCodecProvider;
 import org.bson.codecs.BsonValueCodecProvider;
@@ -78,10 +81,9 @@ class MongoDBConfig extends AbstractMongoClientConfiguration {
                   new JsonObjectCodecProvider(),
                   new BsonCodecProvider(),
                   new EnumCodecProvider(),
-//                  new ExpressionCodecProvider(),
-                  new Jep395RecordCodecProvider()
-//                  ,new KotlinCodecProvider()
-          ));
+                  new ExpressionCodecProvider(),
+                  new Jep395RecordCodecProvider(),
+                  new KotlinCodecProvider()));
 
   private final MongoProperties mongoProperties;
 
@@ -116,6 +118,14 @@ class MongoDBConfig extends AbstractMongoClientConfiguration {
   @Override
   protected String getDatabaseName() {
     return this.mongoProperties.getDatabase();
+  }
+
+  @Override
+  protected Collection<String> getMappingBasePackages() {
+    String mainClassName = System.getProperty("sun.java.command");
+    mainClassName = mainClassName.contains(" ") ? mainClassName.substring(0, mainClassName.indexOf(' ')) : mainClassName;
+    String defaultPackageName = mainClassName.substring(0, mainClassName.lastIndexOf('.'));
+    return Collections.singleton(defaultPackageName);
   }
 
   @Bean
