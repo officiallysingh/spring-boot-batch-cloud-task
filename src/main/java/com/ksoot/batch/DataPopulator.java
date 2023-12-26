@@ -158,7 +158,10 @@ class DataPopulator {
               transactionsCollection.insertMany(transactions);
               transactions.clear();
               log.info(
-                  "Created " + transactionsCount + " Credit card transactions, processed till date: " + date);
+                  "Created "
+                      + transactionsCount
+                      + " Credit card transactions, processed till date: "
+                      + date);
             }
           }
         }

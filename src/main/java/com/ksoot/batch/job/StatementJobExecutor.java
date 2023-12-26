@@ -1,11 +1,10 @@
 package com.ksoot.batch.job;
 
 import com.ksoot.batch.domain.AppConstants;
+import com.ksoot.spring.batch.common.AbstractJobExecutor;
 import java.time.YearMonth;
 import java.util.Collections;
 import java.util.List;
-
-import com.ksoot.spring.batch.common.AbstractJobExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.batch.core.Job;

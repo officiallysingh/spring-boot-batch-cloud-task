@@ -1,6 +1,5 @@
 package com.ksoot.batch.config;
 
-
 import com.ksoot.batch.utils.DateTimeUtils;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -51,7 +50,7 @@ class MongoDBConfig extends AbstractMongoClientConfiguration {
     this.customCodecRegistry =
         CodecRegistries.fromRegistries(
             CodecRegistries.fromCodecs(new OffsetDateTimeCodec(), new ZonedDateTimeCodec()),
-                MongoClientSettings.getDefaultCodecRegistry());
+            MongoClientSettings.getDefaultCodecRegistry());
   }
 
   @Override
@@ -190,7 +189,8 @@ class MongoDBConfig extends AbstractMongoClientConfiguration {
   class OffsetDateTimeCodec implements Codec<OffsetDateTime> {
 
     @Override
-    public void encode(final BsonWriter writer, final OffsetDateTime value, final EncoderContext encoderContext) {
+    public void encode(
+        final BsonWriter writer, final OffsetDateTime value, final EncoderContext encoderContext) {
       if (value != null) {
         writer.writeDateTime(Date.from(value.toInstant()).getTime());
       } else {
@@ -210,7 +210,8 @@ class MongoDBConfig extends AbstractMongoClientConfiguration {
         Instant instant = Instant.ofEpochMilli(milliseconds);
         return OffsetDateTime.ofInstant(instant, DateTimeUtils.SYSTEM_ZONE_ID);
       } else {
-        throw new UnsupportedOperationException("Unsupported BSON type for OffsetDateTime: " + type);
+        throw new UnsupportedOperationException(
+            "Unsupported BSON type for OffsetDateTime: " + type);
       }
     }
 
@@ -223,7 +224,8 @@ class MongoDBConfig extends AbstractMongoClientConfiguration {
   class ZonedDateTimeCodec implements Codec<ZonedDateTime> {
 
     @Override
-    public void encode(final BsonWriter writer, final ZonedDateTime value, final EncoderContext encoderContext) {
+    public void encode(
+        final BsonWriter writer, final ZonedDateTime value, final EncoderContext encoderContext) {
       if (value != null) {
         writer.writeDateTime(Date.from(value.toInstant()).getTime());
       } else {
