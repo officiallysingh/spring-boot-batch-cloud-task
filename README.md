@@ -21,7 +21,7 @@ containing aggregate daily transaction amounts date-wise for a particular month.
 
 ## Installation
 Clone this repository, import in your favourite IDE as either Maven or Gradle project.
-Built on Java 21, Spring boot 3.2.0+ and Spring batch 5.1.0+.
+Requires Java 21, Spring boot 3.2.0+ and Spring batch 5.1.0+.
 
 ### Docker compose
 Application is bundled with [**`Spring boot Docker compose`**](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#features.docker-compose).
@@ -44,7 +44,8 @@ spring:
     mongodb:
       uri: <Your MongoDB URI>
 ```
-> [!IMPORTANT] Make sure **flyway** is enabled as Spring Batch and Spring Cloud Task needs their schema to be created.
+> [!IMPORTANT]
+Make sure **flyway** is enabled as Spring Batch and Spring Cloud Task needs their schema to be created.
 Used internally by the framework to persist and retrieve metadata about the jobs and tasks.
 
 ### Sample Data
