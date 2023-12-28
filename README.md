@@ -1,8 +1,4 @@
-# Spring Data Auditing and Text search
+# Spring Batch Job implementation as Spring Cloud Task
 
-./gradlew bootRun --args='--spring.profiles.active=docker'
-
-./gradlew --stop
-
-TBD
+To be updated soon
 
