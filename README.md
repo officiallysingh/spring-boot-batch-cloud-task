@@ -45,7 +45,7 @@ spring:
       uri: <Your MongoDB URI>
 ```
 > [!IMPORTANT]
-Make sure **flyway** is enabled as Spring Batch and Spring Cloud Task needs their schema to be created.
+Make sure **flyway** is enabled as Spring Batch and Spring Cloud Task needs their [`schema`](src/main/resources/db/migration/V1.1__scdf_schema.sql) to be created.
 Used internally by the framework to persist and retrieve metadata about the jobs and tasks.
 
 ### Sample Data
