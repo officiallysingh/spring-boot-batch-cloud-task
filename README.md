@@ -62,7 +62,8 @@ private static final int BATCH_SIZE = 1000;
 ```
 
 ### Job Parameters
-Job may take following optional parameters, defaults are taken if not specified. Refer to [`StatementJobApplication`](src/main/java/com/ksoot/batch/StatementJobApplication.java) for more details.
+Job may take following optional parameters, defaults are taken if not specified. 
+Refer to [`StatementJobTask`](src/main/java/com/ksoot/batch/StatementJobTask.java) for more details.
 * `cardNumbers` - Comma separated list of Credit card numbers to process. If not specified, all accounts are processed.
 Example: `cardNumbers=5038-1972-4899-4180,5752-0862-5835-3760`
 * `month` - Month (IST) in ISO format yyyy-MM, for which statement is to be generated. If not specified, last month is taken.
