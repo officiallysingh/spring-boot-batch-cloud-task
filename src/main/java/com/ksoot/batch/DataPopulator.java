@@ -31,13 +31,24 @@ class DataPopulator {
   private static final Faker faker =
       new Faker(new Locale.Builder().setLanguage("en").setRegion("US").build());
   private static final Random random = new Random();
+
+  // Total number of Credit card accounts to be created
+  // For each account upto 10 transactions are created for each day of last 3 months
   private static final int ACCOUNTS_COUNT = 1000;
+
+  // Number of records to be created in a batch
   private static final int BATCH_SIZE = 1000;
+
   private static final BigDecimal MIN_VALUE = BigDecimal.valueOf(100);
+
   private static final BigDecimal MAX_VALUE = BigDecimal.valueOf(1000);
+
   private static final int SCALE = 2;
+
   private final MongoTemplate statementMongoTemplate;
+
   private final MongoTemplate accountMongoTemplate;
+
   private final MongoTemplate transactionMongoTemplate;
 
   DataPopulator(

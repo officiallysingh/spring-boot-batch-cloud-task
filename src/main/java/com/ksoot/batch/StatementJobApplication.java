@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import java.time.YearMonth;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -38,16 +39,17 @@ public class StatementJobApplication {
   public static class StatementJobRunner implements ApplicationRunner {
 
     private final StatementJobExecutor statementJobExecutor;
+
     private final DataPopulator dataPopulator;
 
     @Value("${month:#{T(java.time.YearMonth).now().minusMonths(1)}}")
     private YearMonth month;
 
-    @Value("${forceRestart:false}")
-    private boolean forceRestart;
-
     @Value("${cardNumbers:#{null}}")
     private List<String> cardNumbers;
+
+    @Value("${forceRestart:false}")
+    private boolean forceRestart;
 
     public StatementJobRunner(
         final StatementJobExecutor statementJobExecutor, final DataPopulator dataPopulator) {
@@ -62,7 +64,7 @@ public class StatementJobApplication {
           "Starting Statement job task with parameters >> month: "
               + this.month
               + ", cardNumbers: "
-              + this.cardNumbers
+              + (CollectionUtils.isNotEmpty(this.cardNumbers) ? String.join(",", this.cardNumbers) : "All")
               + ", forceRestart: "
               + this.forceRestart);
       this.statementJobExecutor.executeStatementJob(
