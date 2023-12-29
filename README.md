@@ -49,7 +49,7 @@ Make sure **flyway** is enabled as Spring Batch and Spring Cloud Task needs thei
 Used internally by the framework to persist and retrieve metadata about the jobs and tasks.
 
 ### Sample Data
-On first run, it creates schema and populates sample data for last three months into MongoDB collections. 
+On first run, it creates schema and populates sample data for past three months into MongoDB collections. 
 For details refer to [`DataPopulator`](src/main/java/com/ksoot/batch/DataPopulator.java).
 Depending on dataset size to be created the application may take a while to start, the first time. In subsequent runs, it will start quickly.
 You can change the number of accounts to be created as follows
