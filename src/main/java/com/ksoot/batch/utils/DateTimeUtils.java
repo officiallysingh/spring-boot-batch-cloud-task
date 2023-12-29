@@ -43,12 +43,12 @@ public class DateTimeUtils {
         : fromUTCtoIST(LocalDateTime.now()).toLocalDate();
   }
 
-  public static Month currentMonthIST() {
-    return nowLocalDateIST().getMonth();
+  public static YearMonth currentMonthIST() {
+    return YearMonth.from(nowLocalDateIST());
   }
 
-  public static Month previousMonthIST() {
-    return nowLocalDateIST().minusMonths(1).getMonth();
+  public static YearMonth previousMonthIST() {
+    return currentMonthIST().minusMonths(1);
   }
 
   public static ZonedDateTime monthStartZonedDateTime(final Month month, final ZoneId zoneId) {

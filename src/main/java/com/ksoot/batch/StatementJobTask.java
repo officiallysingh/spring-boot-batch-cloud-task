@@ -18,10 +18,10 @@ import org.springframework.context.annotation.Bean;
 @EnableTask
 @SpringBootApplication
 @Slf4j
-public class StatementJobApplication {
+public class StatementJobTask {
 
   public static void main(final String[] args) {
-    SpringApplication.run(StatementJobApplication.class, args);
+    SpringApplication.run(StatementJobTask.class, args);
   }
 
   @Bean
@@ -42,7 +42,7 @@ public class StatementJobApplication {
 
     private final DataPopulator dataPopulator;
 
-    @Value("${month:#{T(java.time.YearMonth).now().minusMonths(1)}}")
+    @Value("${month:#{T(com.ksoot.batch.utils.DateTimeUtils).previousMonthIST()}}")
     private YearMonth month;
 
     @Value("${cardNumbers:#{null}}")
@@ -59,7 +59,10 @@ public class StatementJobApplication {
 
     @Override
     public void run(final ApplicationArguments args) throws Exception {
+
+      this.dataPopulator.createSchema();
       this.dataPopulator.createData();
+
       log.info(
           "Starting Statement job task with parameters >> month: "
               + this.month

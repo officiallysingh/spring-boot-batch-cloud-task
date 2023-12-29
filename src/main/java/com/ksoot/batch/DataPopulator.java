@@ -60,19 +60,7 @@ class DataPopulator {
     this.transactionMongoTemplate = transactionMongoTemplate;
   }
 
-  private static OffsetDateTime generateOffsetDateTime(final LocalDate date) {
-    Date randomDate = faker.date().birthday();
-    LocalTime randomLocalTime = randomDate.toInstant().atZone(ZONE_ID_IST).toLocalTime();
-    return OffsetDateTime.of(date, randomLocalTime, ZONE_OFFSET_IST);
-  }
-
-  private static BigDecimal generateTransactionAmount() {
-    BigDecimal range = MAX_VALUE.subtract(MIN_VALUE);
-    BigDecimal randomValue = MIN_VALUE.add(range.multiply(BigDecimal.valueOf(random.nextDouble())));
-    return randomValue.setScale(SCALE, RoundingMode.HALF_UP);
-  }
-
-  private void createSchema() {
+  void createSchema() {
     log.info("Creating Schema");
     if (!this.statementMongoTemplate.collectionExists("statements")) {
       this.statementMongoTemplate.createCollection("statements");
@@ -123,13 +111,12 @@ class DataPopulator {
     }
   }
 
-  public void createData() {
-    this.createSchema();
+  void createData() {
     log.info("Creating sample data");
     final MongoCollection<Document> accountsCollection =
         this.accountMongoTemplate.getCollection("accounts");
     if (accountsCollection.countDocuments() > 0) {
-      log.info("Dummy data already exists");
+      log.info("Sample data already exists");
       return;
     }
     final MongoCollection<Document> transactionsCollection =
@@ -196,5 +183,17 @@ class DataPopulator {
     }
     log.info("Created " + accountsCount + " Credit card accounts");
     log.info("Created " + transactionsCount + " transactions for months: " + months);
+  }
+
+  private static OffsetDateTime generateOffsetDateTime(final LocalDate date) {
+    Date randomDate = faker.date().birthday();
+    LocalTime randomLocalTime = randomDate.toInstant().atZone(ZONE_ID_IST).toLocalTime();
+    return OffsetDateTime.of(date, randomLocalTime, ZONE_OFFSET_IST);
+  }
+
+  private static BigDecimal generateTransactionAmount() {
+    BigDecimal range = MAX_VALUE.subtract(MIN_VALUE);
+    BigDecimal randomValue = MIN_VALUE.add(range.multiply(BigDecimal.valueOf(random.nextDouble())));
+    return randomValue.setScale(SCALE, RoundingMode.HALF_UP);
   }
 }

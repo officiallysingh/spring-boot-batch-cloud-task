@@ -62,10 +62,10 @@ private static final int BATCH_SIZE = 1000;
 ```
 
 ### Job Parameters
-Job may take following optional parameters, defaults are taken if not specified. Refer to [`StatementJobApplication`](src/main/java/com/techsharezone/batch/statement/StatementJobApplication.java) for more details.
+Job may take following optional parameters, defaults are taken if not specified. Refer to [`StatementJobApplication`](src/main/java/com/ksoot/batch/StatementJobApplication.java) for more details.
 * `cardNumbers` - Comma separated list of Credit card numbers to process. If not specified, all accounts are processed.
 Example: `cardNumbers=5038-1972-4899-4180,5752-0862-5835-3760`
-* `month` - Month for which statement is to be generated. If not specified, last month is taken.
+* `month` - Month (IST) in ISO format yyyy-MM, for which statement is to be generated. If not specified, last month is taken.
 Example: `month=2023-11`
 * `forceRestart` - If set to true, job is restarted even if its last execution with same parameters was successful. 
 If not specified `false` is taken as default, in this case if its last execution with same parameters was successful then Job would not execute again.
@@ -76,6 +76,8 @@ You can pass these parameters as program arguments from your IDE as follows.
 ```shell
 --cardNumbers=5038-1972-4899-4180,5752-0862-5835-3760 --month=2023-11 --forceRestart=true
 ```
+
+![IntelliJ Run Configuration](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*0s2E6-iNFqr_xptwrmJTdg.jpeg)
 
 ## Implementation
 The application uses [**`spring-batch-commons`**](https://github.com/officiallysingh/spring-batch-commons) to avail common Spring Batch components, out of box.
@@ -94,7 +96,7 @@ implementation 'io.github.officiallysingh:spring-batch-commons:1.0'
 
 ### Job Configuration
 Defines a Partitioned Job with a single step as follows. 
-For details, refer to [`StatementJobConfiguration`](src/main/java/com/techsharezone/batch/statement/config/StatementJobConfiguration.java).
+For details, refer to [`StatementJobConfiguration`](src/main/java/com/ksoot/batch/job/StatementJobConfiguration.java).
 Reader and Writer are self-explanatory. Processor should contain all business logic and Multiple processors can be chained together using 
 [`CompositeItemProcessor`](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/item/support/CompositeItemProcessor.html).
 [`BeanValidatingItemProcessor`](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/item/validation/BeanValidatingItemProcessor.html) is used to validate the input data.
@@ -217,7 +219,7 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
 ### Job Partitioning
 If specific `cardNumbers` are passed as job parameters, then the job is partitioned on these account numbers only. 
 Otherwise, all accounts are processed in parallel by partitioning on account numbers.
-For details refer to [`AccountsPartitioner`](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/src/main/java/com/ksoot/batch/job/AccountsPartitioner.java).
+For details refer to [`AccountsPartitioner`](src/main/java/com/ksoot/batch/job/AccountsPartitioner.java).
 ```java
 @Slf4j
 public class AccountsPartitioner extends AbstractPartitioner {
