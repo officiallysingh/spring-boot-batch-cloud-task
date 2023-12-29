@@ -217,6 +217,10 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
 }
 ```
 
+> [!IMPORTANT]
+Any component needing access to `stepExecutionContext` must be defined as `@StepScope` bean
+and to access `jobParameters` or `jobExecutionContext` must be defined as `@JobScope` bean
+
 ### Job Partitioning
 If specific `cardNumbers` are passed as job parameters, then the job is partitioned on these account numbers only. 
 Otherwise, all accounts are processed in parallel by partitioning on account numbers.
