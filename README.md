@@ -78,7 +78,7 @@ You can pass these parameters as program arguments from your IDE as follows.
 --cardNumbers=5038-1972-4899-4180,5752-0862-5835-3760 --month=2023-11 --forceRestart=true
 ```
 
-![IntelliJ Run Configuration](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*0s2E6-iNFqr_xptwrmJTdg.jpeg)
+![IntelliJ Run Configuration](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/IntelliJ%20Run%20Configuration.png)
 
 ## Implementation
 The application uses [**`spring-batch-commons`**](https://github.com/officiallysingh/spring-batch-commons) to avail common Spring Batch components, out of box.
