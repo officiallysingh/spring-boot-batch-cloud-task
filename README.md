@@ -3,7 +3,7 @@
 [**Spring Cloud Task**](https://docs.spring.io/spring-cloud-task/docs/current/reference/html/) is a framework for creating and orchestrating short-lived microservices.
 So It's a good fit for Spring Batch Jobs as the JVM persists until the job is completed and subsequently exits, freeing up resources.
 
-![String Batch Architecture](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/Spring%20Batch%20Cloud%20Batch.jpg)
+![String Batch Architecture](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/Spring_Batch_Cloud_Task.jpg)
 
 ## Introduction
 This project is a simple example of how to implement a Spring Batch Job as a Spring Cloud Task.
@@ -74,7 +74,7 @@ You can pass these parameters as program arguments from your IDE as follows.
 --cardNumbers=5038-1972-4899-4180,5752-0862-5835-3760 --month=2023-11 --forceRestart=true
 ```
 
-![IntelliJ Run Configuration](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/IntelliJ%20Run%20Configuration.png)
+![IntelliJ Run Configuration](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/IntelliJ_Run_Configuration.png)
 
 ## Implementation
 The application uses [**`spring-batch-commons`**](https://github.com/officiallysingh/spring-batch-commons) to avail common Spring Batch components, out of box.
