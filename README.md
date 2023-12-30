@@ -1,13 +1,9 @@
 # Spring Batch Job implementation as Spring Cloud Task
 
-[**Spring Batch**](https://docs.spring.io/spring-batch/reference/index.html) is a battle tested Java framework that makes it easy to write batch applications. 
-Batch applications involve reliably and efficiently processing large volumes of data to and
-from various data sources (files, databases, messaging middleware, and so on). 
-Spring Batch is great at doing this and provides the necessary foundation to meet the stringent requirements of batch applications.
-It provides mechanisms for common tasks such as **task orchestration**, **partitioning**, and **restart**.
-
 [**Spring Cloud Task**](https://docs.spring.io/spring-cloud-task/docs/current/reference/html/) is a framework for creating and orchestrating short-lived microservices.
 So It's a good fit for Spring Batch Jobs as the JVM persists until the job is completed and subsequently exits, freeing up resources.
+
+![String Batch Architecture](https://github.com/officiallysingh/spring-boot-batch-cloud-task/blob/main/Spring%20Batch.jpg)
 
 ## Introduction
 This project is a simple example of how to implement a Spring Batch Job as a Spring Cloud Task.
@@ -257,6 +253,23 @@ public class AccountsPartitioner extends AbstractPartitioner {
         .into(new ArrayList<>());
   }
 }
+```
+
+### Data Sources configurations
+Different databases can be configured for `statement_db`, `account_db` and `transaction_db` or all can be set to same database URI as follows.
+Refer to [`MongoDBConfig`](src/main/java/com/ksoot/batch/config/MongoDBConfig.java) for details.
+```yaml
+spring:
+  data:
+    mongodb:
+      uri: <Statement DB URI>
+      database: statement_db
+      account:
+        uri: <Account DB URI>
+        database: account_db
+      transaction:
+        uri: <Transaction DB URI>
+        database: transaction_db
 ```
 
 ## Author
