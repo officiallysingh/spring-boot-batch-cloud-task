@@ -69,7 +69,7 @@ If not specified `false` is taken as default, in this case if its last execution
 Example: `forceRestart=true`
 
 > [!IMPORTANT]
-You can pass these parameters as program arguments from your IDE as follows.
+These parameters can be passed as program arguments from your IDE as follows.
 ```shell
 --cardNumbers=5038-1972-4899-4180,5752-0862-5835-3760 --month=2023-11 --forceRestart=true
 ```
