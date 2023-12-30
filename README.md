@@ -273,6 +273,41 @@ spring:
         database: transaction_db
 ```
 
+## Configurations
+Following are the configuration properties to customize default Spring batch behaviour.
+```yaml
+batch:
+  chunk-size: 100
+  skip-limit: 10
+  max-retries: 3
+  backoff-initial-delay: PT3S
+  backoff-multiplier: 2
+  page-size: 300
+  partition-size: 16
+  trigger-partitioning-threshold: 100
+#  task-executor: applicationTaskExecutor
+#  run-id-sequence: run_id_sequence
+```
+
+* **`batch.chunk-size`** : Number of items that are processed in a single transaction by a chunk-oriented step, Default: 100.
+* **`batch.skip-limit`** : Maximum number of items to skip as per configured Skip policy, exceeding which fails the job, Default: 10.
+* **`batch.max-retries`** : Maximum number of retry attempts as configured Retry policy, exceeding which fails the job, Default: 3.
+* **`batch.backoff-initial-delay`** : Time duration (in java.time.Duration format) to wait before the first retry attempt is made after a failure, Default: false.
+* **`batch.backoff-multiplier`** : Factor by which the delay between consecutive retries is multiplied, Default: 3.
+* **`batch.page-size`** : Number of records to be read in each page by Paging Item readers, Default: 100.
+* **`batch.partition-size`** : Number of partitions that will be used to process the data concurrently.
+  Should be optimized as per available machine resources, Default: 8.
+* **`batch.trigger-partitioning-threshold`** : Minimum number of records to trigger partitioning otherwise
+  it could be counter productive to do partitioning, Default: 100.
+* **`batch.task-executor`** : Bean name of the Task Executor to be used for executing the jobs. By default `SyncTaskExecutor` is used.
+  Set to `applicationTaskExecutor` to use `SimpleAsyncTaskExecutor` provided by Spring.
+  Or use any other custom `TaskExecutor` and set the bean name here. Don't set this property in Spring cloud task but Spring Rest applications.
+* **`batch.run-id-sequence`** : Run Id database sequence name, Default: `run_id_sequence`.
+
+> [!IMPORTANT]
+It is recommended not to set `batch.task-executor` to `AsyncTaskExecutor` as the application may not exit because of that.
+Spring cloud task should be executed synchronously.
+
 ## Author
 [**Rajveer Singh**](https://www.linkedin.com/in/rajveer-singh-589b3950/), In case you find any issues or need any support, please email me at raj14.1984@gmail.com
 
