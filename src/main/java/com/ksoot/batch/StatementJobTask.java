@@ -60,6 +60,10 @@ public class StatementJobTask {
     @Override
     public void run(final ApplicationArguments args) throws Exception {
 
+      if(!this.month.isBefore(DateTimeUtils.currentMonthIST())) {
+        throw new IllegalArgumentException("Only past Months allowed");
+      }
+
       this.dataPopulator.createSchema();
       this.dataPopulator.createData();
 
