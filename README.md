@@ -257,6 +257,7 @@ public class AccountsPartitioner extends AbstractPartitioner {
 
 ### Data Sources configurations
 Different databases can be configured for `statement_db`, `account_db` and `transaction_db` or all can be set to same database URI as follows.
+**Converters** and **Codecs** are registered to support `OffsetDateTime` and `ZonedDateTime` types in `MongoTemplate`.
 Refer to [`MongoDBConfig`](src/main/java/com/ksoot/batch/config/MongoDBConfig.java) for details.
 ```yaml
 spring:

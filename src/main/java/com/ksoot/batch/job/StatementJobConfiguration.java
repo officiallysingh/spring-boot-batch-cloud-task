@@ -151,7 +151,7 @@ class StatementJobConfiguration extends JobConfigurationSupport<DailyTransaction
         .collection("statements")
         .idGenerator(
             (Statement item) ->
-                MongoIdGenerator.compositeIdGenerator(item.cardNumber(), item.transactionDate()))
+                MongoIdGenerator.compositeIdGenerator(item.getCardNumber(), item.getTransactionDate()))
         .build();
   }
 }
