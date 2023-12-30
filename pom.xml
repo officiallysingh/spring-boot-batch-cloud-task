@@ -21,7 +21,7 @@
         <guava.version>32.1.3-jre</guava.version>
         <datafaker.version>2.0.2</datafaker.version>
 
-        <spring-batch-commons.version>0.0.2-SNAPSHOT</spring-batch-commons.version>
+        <spring-batch-commons.version>1.0</spring-batch-commons.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
