@@ -315,6 +315,6 @@ Spring cloud task should be executed synchronously.
 * Refer to Spring batch common components and utilities [**`spring-batch-commons`**](https://github.com/officiallysingh/spring-batch-commons).
 * Refer to Spring Batch Job implemented as Spring Rest application [**`spring-boot-batch-web`**](https://github.com/officiallysingh/spring-boot-batch-web).
 * For exception handling refer to [**`spring-boot-problem-handler`**](https://github.com/officiallysingh/spring-boot-problem-handler).
+* For Spring Data MongoDB Auditing refer to [**`spring-boot-mongodb-auditing`**](https://github.com/officiallysingh/spring-boot-mongodb-auditing).
 * For more details on Spring Batch refer to [**`Spring Batch Reference`**](https://docs.spring.io/spring-batch/reference/index.html).
 * To deploy on Spring cloud Data Flow refer to [**`Spring Cloud Data Flow Reference`**](https://spring.io/projects/spring-cloud-dataflow/).
-* For Spring Data MongoDB Auditing refer to [**`spring-boot-mongodb-auditing`**](https://github.com/officiallysingh/spring-boot-mongodb-auditing).
